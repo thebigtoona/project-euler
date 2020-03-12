@@ -16,22 +16,22 @@ function Fibonacci (limit = 10) {
     prev = next
     next = current
   }
-  return array
+  return array.filter(value => value <= 4000000)
 }
 
 function sumEvenFibbonacciNumbers (limit) {
-  return (
-    Fibonacci(limit)
-      .filter((v, i, a) => v % 2 === 0)
-      // .map((v, i, arr) => v > 9007199254740992) // first 26 terms are below this threshold
-      .reduce((prev, current) => BigInt(prev) + BigInt(current))
-      .toLocaleString()
-  )
+  return Fibonacci(limit)
+    .filter((v, i, a) => v % 2 === 0)
+    .reduce(
+      (previousValue, currentValue) =>
+        BigInt(previousValue) + BigInt(currentValue)
+    )
+    .toString()
 }
 
 console.log({
   output: sumEvenFibbonacciNumbers(4000000),
-  test: 2 ** 53
+  Fibonacci: Fibonacci(10)
 })
 
 //TODO: function is working.  Need to figure out how to work with BigInt
