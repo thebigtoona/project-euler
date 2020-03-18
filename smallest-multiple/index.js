@@ -40,9 +40,7 @@ function prime_factorization (composite_number) {
     .map(f => [f, composite_number / f].sort((a, b) => a - b))
     .sort()[0]
 
-  const branched_pairs = first_branch.map(p =>
-    isPrime(p) ? p : prime_factorization(p)
-  )
+  const branched_pairs = first_branch.map(p => prime_factorization(p))
 
   return branched_pairs.flat().sort()
 }
@@ -60,24 +58,27 @@ function smallest_multiple (range) {
 
   const composite_factors = all_factors
     .filter(v => v.length)
-    .map(comp_set => {
-      const count = value => [...comp_set].filter(x => x === value).length
-      return [...comp_set.map(c => ({ prime: c, count: count(c) }))]
+    .map(composite_factor_set => {
+      const count = value =>
+        [...composite_factor_set].filter(x => x === value).length
+      return [...composite_factor_set.map(c => ({ prime: c, count: count(c) }))]
     })
     .flat()
     .sort((a, b) => b.prime - a.prime)
 
   const solution = prime_factors
     .map(prime_factor => {
-      const s = composite_factors.filter(
+      const higher_counts = composite_factors.filter(
         composite_factor =>
           composite_factor.prime === prime_factor.prime &&
           composite_factor.count > prime_factor.count
       )
 
-      if (s.length > 0) {
-        const updated_object = s.sort((a, b) => b.count - a.count)[0]
-        return updated_object
+      if (higher_counts.length > 0) {
+        const updated_prime_factor = higher_counts.sort(
+          (a, b) => b.count - a.count
+        )[0]
+        return updated_prime_factor
       } else {
         return prime_factor
       }
