@@ -54,11 +54,11 @@ function smallest_multiple (range) {
     (_, i) => i + 1
   ).filter(d => d > 1)).map(n => prime_factorization(n))
 
-  const primes = all_factors
+  const prime_factors = all_factors
     .filter(v => !v.length)
     .map(p => ({ prime: p, count: 1 }))
 
-  const composites = all_factors
+  const composite_factors = all_factors
     .filter(v => v.length)
     .map(comp_set => {
       const count = value => [...comp_set].filter(x => x === value).length
@@ -67,18 +67,19 @@ function smallest_multiple (range) {
     .flat()
     .sort((a, b) => b.prime - a.prime)
 
-  const solution = primes
-    .map(prime_object => {
-      const s = composites.filter(
-        obj =>
-          obj.prime === prime_object.prime && obj.count > prime_object.count
+  const solution = prime_factors
+    .map(prime_factor => {
+      const s = composite_factors.filter(
+        composite_factor =>
+          composite_factor.prime === prime_factor.prime &&
+          composite_factor.count > prime_factor.count
       )
 
       if (s.length > 0) {
         const updated_object = s.sort((a, b) => b.count - a.count)[0]
         return updated_object
       } else {
-        return prime_object
+        return prime_factor
       }
     })
     .map(v => v.prime ** v.count)
